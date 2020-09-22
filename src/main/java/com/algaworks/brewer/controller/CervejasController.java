@@ -5,25 +5,27 @@ import javax.validation.Valid;
 import com.algaworks.brewer.model.Cerveja;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class CervejasController {
     
     @GetMapping(value = "/cervejas/novo")
-    public String novo() {
+    public String novo(Cerveja cerveja) {
         return "/cerveja/cadastroCerveja";
     }
 
     @PostMapping(value = "/cervejas/novo")
-    public String cadastrar(@ModelAttribute @Valid Cerveja cerveja, BindingResult result){
+    public String cadastrar(@ModelAttribute @Valid Cerveja cerveja, BindingResult result, Model model, RedirectAttributes attributes){
         if (result.hasErrors()) {
-            System.out.println("Erro no preenchimento do formulário!");
+            return novo(cerveja);
         }
-        System.out.println(cerveja.getSku());
-        return "/cerveja/cadastroCerveja";
+        attributes.addFlashAttribute("mensagem", "Cerveja salva com sucesso!");
+        return "redirect:/cervejas/novo";
     }
 }
