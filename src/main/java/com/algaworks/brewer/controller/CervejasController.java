@@ -8,9 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 public class CervejasController {
@@ -21,11 +22,17 @@ public class CervejasController {
     }
 
     @PostMapping(value = "/cervejas/novo")
-    public String cadastrar(@ModelAttribute @Valid Cerveja cerveja, BindingResult result, Model model, RedirectAttributes attributes){
+    public String cadastrar(@Valid Cerveja cerveja, BindingResult result, Model model, RedirectAttributes attributes){
         if (result.hasErrors()) {
             return novo(cerveja);
         }
         attributes.addFlashAttribute("mensagem", "Cerveja salva com sucesso!");
         return "redirect:/cervejas/novo";
     }
+
+    @GetMapping(value="/teste")
+    public String getMethodName() {
+        return "cerveja/cadastro-produto";
+    }
+    
 }
