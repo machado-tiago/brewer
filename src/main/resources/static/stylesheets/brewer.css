@@ -1,0 +1,12 @@
+.bw-field-action{
+    display: flex;
+}
+
+.bw-field-action_icon{
+    margin: auto 0px auto 5px;
+
+}
+
+.bw-glyphicon-large{
+    font-size: 16px;
+}
