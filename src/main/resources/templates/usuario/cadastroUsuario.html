@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt" 
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/LayoutPadrao}">
+
+<head></head>
+
+<body>
+    <section layout:fragment="conteudo">
+        <div class="page-header">
+            <div class="container-fluid">
+                <h1>
+                    Cadastro de usuário
+                </h1>
+            </div>
+        </div>
+        
+        <div class="container-fluid">
+            <div class="alert  alert-danger  alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <i class="fa  fa-exclamation-circle"></i> Já existe um usuário com o email informado.
+            </div>
+        
+            <form class="form-vertical  js-form-loading" method="POST" action="" >
+                <div class="row">
+                    <div class="col-sm-12 form-group">
+                        <label for="nome">Nome</label>
+                        <input id="nome" type="text" class="form-control"/>
+                    </div>
+                </div>
+                
+              
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email"  class="form-control"/>
+                    </div>
+                    <div class="col-sm-3 form-group">
+                        <label for="nascimento">Data de Nascimento</label>
+                        <input type="date" id="nascimento" class="form-control"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-3 form-group">
+                        <label for="senha">Senha</label>
+                        <input type="password" id="senha" class="form-control"/>
+                    </div>
+
+                    <div class="col-sm-3 form-group">
+                        <label for="confirSenha">Confirmação de senha</label>
+                        <input type="password" id="confirSenha" class="form-control"/>
+                    </div>
+
+                    <div class="form-group col-sm-6">
+                        <label>Status</label>
+                        <div class="form-check">
+                            <input type="checkbox" name="status" id="inativo" class="form-check-input"/>
+                            <label class="form-check-label" for="inativo">Inativo</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-12 form-check form-check-inline">
+                        <label>Grupos</label>
+                        <div>
+                            <input type="checkbox" value="administrador" id="administrador" name="grupos" class="form-check-input"/>
+                            <label class="form-check-label" for="administrador">Administrador</label>
+                            <input type="checkbox" value="vendedor" id="vendedor" name="grupos" class="form-check-input"/>
+                            <label class="form-check-label" for="vendedor">Vendedor</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-3 form-group">
+                        <button class="btn  btn-primary" type="submit">Salvar</button>
+                    </div>    
+                </div>
+            </form>
+        </div>
+    </section>
+
+</body>
+</html>
