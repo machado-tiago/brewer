@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 
-@Entity
+
 public class Cliente {
     @Id
     @NotBlank(message = "O documento é obrigatório")
