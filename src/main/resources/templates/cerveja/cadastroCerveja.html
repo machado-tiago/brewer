@@ -17,14 +17,12 @@
         </div>
         
         <div class="container-fluid">
-        
-            <div class="alert  alert-danger  alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <i class="fa  fa-exclamation-circle"></i> 
-                <span th:object="${mensagem}">Já existe um produto com o nome informado.</span> 
-            </div>
-        
+            <th:block th:include="fragments/MensagensSucesso"></th:block>
+
             <form class="form-vertical  js-form-loading" method="POST" action="" th:object="${cerveja}">
+
+                <th:block th:include="fragments/MenssagensErroValidacao"></th:block>
+            
                 <div class="row">
                     <div class="col-sm-2 form-group">
                         <label for="sku">SKU</label>
@@ -62,7 +60,7 @@
                     <div class="col-sm-3 form-group">
                         <label for="sabor">Sabor</label>
                         <select id="sabor" class="form-control" th:field="*{sabor}">
-                            <option selected="selected" hidden="true" value=null >Selecione o sabor</option>
+                            <option selected="selected" hidden="true" value="" >Selecione o sabor</option>
                             <option th:each=" sabor : ${sabores}" th:value="${sabor}" th:text="${sabor.descricao}"></option>
                         </select>
                     </div>
