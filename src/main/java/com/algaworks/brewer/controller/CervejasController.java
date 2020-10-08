@@ -5,7 +5,6 @@ import javax.validation.Valid;
 import com.algaworks.brewer.model.Cerveja;
 import com.algaworks.brewer.model.Origem;
 import com.algaworks.brewer.model.Sabor;
-import com.algaworks.brewer.repository.EstiloRepository;
 import com.algaworks.brewer.service.CervejaService;
 import com.algaworks.brewer.service.EstiloService;
 
