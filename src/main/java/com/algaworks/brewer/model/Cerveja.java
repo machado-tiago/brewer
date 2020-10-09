@@ -18,6 +18,8 @@ import javax.validation.constraints.Size;
 
 import com.algaworks.brewer.validation.SKU;
 
+import org.springframework.format.annotation.NumberFormat;
+
 @Entity
 @Table(name = "cerveja")
 public class Cerveja {
@@ -25,17 +27,19 @@ public class Cerveja {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long codigo;
     @SKU
-    @NotBlank(message = "SKU é obrigatório")
+    @NotBlank(message = "SKU é obrigatório.")
     private String sku;
-    @NotBlank(message = "Nome é obrigatório")
+    @NotBlank(message = "Nome é obrigatório.")
     private String nome;
-    @Size(min=1, max = 50, message = "Tamanho da descrição deve ser entre 1 e 50")
+    @Size(min=1, max = 50, message = "Tamanho da descrição deve ser entre 1 e 50.")
     private String descricao;
+    @NumberFormat
     private BigDecimal valor;
     @Column(name = "teor_alcoolico")
     private BigDecimal teorAlcoolico;
     private BigDecimal comissao;
     @Column(name = "quantidade_estoque")
+    @NumberFormat
     private Integer quantidadeEstoque;
     @Enumerated(EnumType.STRING)
     private Sabor sabor;

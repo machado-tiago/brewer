@@ -1,5 +1,6 @@
 package com.algaworks.brewer.controller;
 
+import javax.swing.text.NumberFormatter;
 import javax.validation.Valid;
 
 import com.algaworks.brewer.model.Cerveja;
@@ -9,10 +10,14 @@ import com.algaworks.brewer.service.CervejaService;
 import com.algaworks.brewer.service.EstiloService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.NumberFormat;
+import org.springframework.format.number.NumberStyleFormatter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;

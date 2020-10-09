@@ -16,7 +16,7 @@ import javax.validation.constraints.Pattern;
 @Pattern(regexp = "([a-zA-Z]{2}\\d{4})?")
 public @interface SKU {
     @OverridesAttribute(constraint = Pattern.class, name = "message")
-    String message() default "SKU deve seguir o padrão XX9999";
+    String message() default "SKU deve seguir o padrão XX9999.";
 
     Class<?>[]groups() default{};//serve para agrupar validações
     Class<? extends Payload> [] payload() default{}; //serve para classificar o erro (grave, médio, ...)
