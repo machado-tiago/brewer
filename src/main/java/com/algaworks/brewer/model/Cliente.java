@@ -1,6 +1,5 @@
 package com.algaworks.brewer.model;
 
-import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 

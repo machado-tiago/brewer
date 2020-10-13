@@ -17,16 +17,15 @@
         </div>
         
         <div class="container-fluid">
-            <div class="alert  alert-danger  alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <i class="fa  fa-exclamation-circle"></i> Já existe um estilo com o nome informado.
-            </div>
+            <th:block th:include="fragments/MensagensSucesso"></th:block>
         
-            <form class="form-vertical  js-form-loading" method="POST" action="" >
-                <div class="row">
+            <form class="form-vertical  js-form-loading" method="POST" th:object="${estilo}" >
+                <th:block th:include="fragments/MenssagensErroValidacao"></th:block>
+
+                <div class="row" th:classappend="${#fields.hasErrors('nome')} ? has-error"> 
                     <div class="col-sm-12 form-group">
-                        <label for="estilo">Estilo</label>
-                        <input id="estilo" type="text" class="form-control"/>
+                        <label class="control-label" for="nome">Estilo</label>
+                        <input id="nome" type="text" th:field="*{nome}" class="form-control"/>
                     </div>
                 </div>
                 
