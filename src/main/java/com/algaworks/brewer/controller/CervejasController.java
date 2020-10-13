@@ -32,6 +32,7 @@ public class CervejasController {
     @Autowired
     private CervejaService cervejaService;
 
+
     @GetMapping(value = "/cervejas/novo")
     public ModelAndView novo(Cerveja cerveja) {
         ModelAndView mv = new ModelAndView("/cerveja/cadastroCerveja");
