@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import com.algaworks.brewer.model.Estilo;
 import com.algaworks.brewer.service.EstiloService;
+import com.algaworks.brewer.exception.NovoEstiloJaCadastradoException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,7 +32,14 @@ public class EstiloController {
         if (result.hasErrors()) {
             return novo(estilo);
         }
-        estiloService.salvar(estilo);
+        try {
+            estiloService.salvar(estilo);
+        }catch (NovoEstiloJaCadastradoException e){
+            result.rejectValue("nome", e.getMessage(), e.getMessage());
+            return novo(estilo);
+        }
+        
+
         attributes.addFlashAttribute("mensagem", "Estilo salvo com sucesso!");
         return new ModelAndView("redirect:/estilos/novo");
     } 

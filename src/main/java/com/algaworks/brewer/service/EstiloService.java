@@ -1,7 +1,10 @@
 package com.algaworks.brewer.service;
 
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 
+import com.algaworks.brewer.exception.NovoEstiloJaCadastradoException;
 import com.algaworks.brewer.model.Estilo;
 import com.algaworks.brewer.repository.EstiloRepository;
 
@@ -20,7 +23,12 @@ public class EstiloService {
 
 	@Transactional
 	public Estilo salvar(Estilo estilo){
-		return estiloRepository.save(estilo);
+		Optional <Estilo> estiloOptional = estiloRepository.findByNomeIgnoreCase(estilo.getNome());
+		if (estiloOptional.isPresent()) {
+			throw new NovoEstiloJaCadastradoException();
+		} else {
+			return estiloRepository.save(estilo);
+		}
 	}
 
 
