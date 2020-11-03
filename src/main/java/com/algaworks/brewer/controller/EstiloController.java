@@ -53,11 +53,7 @@ public class EstiloController {
         if(result.hasErrors()){
             return ResponseEntity.badRequest().body(result.getFieldError().getDefaultMessage());
         }else{
-            try {
-                estiloService.salvar(estilo);    
-            } catch (NovoEstiloJaCadastradoException e) {
-                return ResponseEntity.badRequest().body(e.getMessage());
-            }
+            estiloService.salvar(estilo);    
             return ResponseEntity.ok(estilo);
         }
     }
