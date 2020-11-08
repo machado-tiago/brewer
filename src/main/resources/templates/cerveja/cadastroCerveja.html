@@ -5,7 +5,10 @@
     layout:decorate="~{layout/LayoutPadrao}"
     xmlns:brewer="http://www.brewer.com" >
 
-<head></head>
+<head>
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.5.9/dist/css/uikit.min.css" />
+</head>
 
 <body>
     <section layout:fragment="conteudo">
@@ -21,7 +24,7 @@
 
             <form class="form-vertical  js-form-loading" method="POST" action="" th:object="${cerveja}">
                 <brewer:message/>
-                
+
                 <div class="row">
                     <div class="col-sm-2 form-group" brewer:classforerror="sku">
                         <label for="sku" class="control-label">SKU</label>
@@ -107,6 +110,18 @@
                 </div>
 
                 <div class="row">
+                    <div class="form-group col-sm-3">
+                        <label class="control-label">Foto</label>
+                            <div class="input-group-btn form-inline">
+                                <input class="form-control" id=upload-select type="file" accept=".jpg,.jpeg,.png" onchange="handleFiles(this.files)"/>
+                                <button class="form-control btn btn-primary" >Upload <i class="glyphicon  glyphicon-cloud-upload"></i></button>
+                            </div>
+                    </div>
+                </div>
+                <div class="row">
+                </div>
+
+                <div class="row">
                     <div class="col-sm-3 form-group">
                         <button class="btn  btn-primary" type="submit">Salvar</button>
                     </div>    
@@ -120,5 +135,17 @@
 <th:block layout:fragment="javascript-extra">
     <script th:src="@{/javascripts/estilo.cadastro-rapido.js}"></script> </script>
 </th:block>
+<!-- UIkit JS -->
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.5.9/dist/js/uikit.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.5.9/dist/js/uikit-icons.min.js"></script>
+
+<script>
+    $(function () {
+        var settings = {type: 'json', multiple: false, allow: '*.(jpg|jpeg|png)', url: '/brewer/fotos'};
+        UIkit.upload($('#upload-select'),settings);
+
+    });
+</script>
+
 </body>
 </html>
