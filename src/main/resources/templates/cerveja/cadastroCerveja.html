@@ -110,16 +110,18 @@
                 </div>
 
                 <div class="row">
-                    <div class="form-group col-sm-3">
+                    <div class="form-group col-sm-12">
                         <label class="control-label">Foto</label>
-                            <div class="input-group-btn form-inline">
-                                <input class="form-control" id=upload-select type="file" accept=".jpg,.jpeg,.png" onchange="handleFiles(this.files)"/>
-                                <button class="form-control btn btn-primary" >Upload <i class="glyphicon  glyphicon-cloud-upload"></i></button>
+                            <div class="form-inline">
+                                <div class="form-group input-group-btn"> 
+                                    <input class="form-control" id=upload-select type="file" accept=".jpg,.jpeg,.png" />
+                                    <button id="uploadfile" class="form-control btn btn-primary" onclick="uploadFile();" type="button"><i class="glyphicon glyphicon-cloud-upload"></i> Upload</button>
+                                    <img class="form-control" alt="Imagem" src="" id="target" width="200" height="200">
+                                </div>
                             </div>
                     </div>
                 </div>
-                <div class="row">
-                </div>
+
 
                 <div class="row">
                     <div class="col-sm-3 form-group">
@@ -133,19 +135,51 @@
         <div th:replace="estilo/CadastroRapidoEstilo :: modal"></div>
     </section>
 <th:block layout:fragment="javascript-extra">
-    <script th:src="@{/javascripts/estilo.cadastro-rapido.js}"></script> </script>
+    <script th:src="@{/javascripts/estilo.cadastro-rapido.js}"></script>
 </th:block>
 <!-- UIkit JS -->
 <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.9/dist/js/uikit.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.9/dist/js/uikit-icons.min.js"></script>
 
-<script>
-    $(function () {
-        var settings = {type: 'json', multiple: false, allow: '*.(jpg|jpeg|png)', url: '/brewer/fotos'};
-        UIkit.upload($('#upload-select'),settings);
+<th:block layout:fragment="javascript-extra2">
+    <script type="text/javascript">
+    function uploadFile(){
+        var target = $('#target');
+        var file = $('#upload-select')[0].files[0];
+        
+        var form = new FormData();
+        form.append("file", file,file.name);
 
-    });
-</script>
+
+        var fileReader = new FileReader();
+        fileReader.onloadend = function (){
+            target.src =fileReader.result;//define o atributo src do elemento #target quando o arquivo for carregado
+        }
+        
+        var settings ={
+            url:'/brewer/cervejas/fileupload',
+            cache: false,
+            contentType: false,
+            type: 'POST',
+            enctype: 'multipart/form-data',
+            data: form,//quando é do tipo form-data é necessário esse atributo, não sendo um json
+            processData: false,
+            success: function(response) {
+                debugger;
+                data = response.data;
+            }
+        }
+        
+        if (file){
+            $.ajax(settings).done(function(response){
+                console.log(response);
+            });   
+        }else {
+            target.src ="";
+        }
+    }
+    </script>
+</th:block>
 
 </body>
 </html>
