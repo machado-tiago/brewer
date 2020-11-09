@@ -7,6 +7,7 @@ import com.algaworks.brewer.model.Origem;
 import com.algaworks.brewer.model.Sabor;
 import com.algaworks.brewer.service.CervejaService;
 import com.algaworks.brewer.service.EstiloService;
+import com.algaworks.brewer.storage.FotoStorageRunnable;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -58,8 +60,12 @@ public class CervejasController {
 
     
     @RequestMapping(value = "/fileupload", method = RequestMethod.POST, consumes =MediaType.MULTIPART_FORM_DATA_VALUE)
-    public @ResponseBody ResponseEntity<String> fileupload(@RequestBody @RequestParam(required = true, value = "file") MultipartFile file){
-        System.out.println(file.getOriginalFilename());
-        return ResponseEntity.ok().build();
+    public @ResponseBody DeferredResult<String> fileupload(@RequestBody @RequestParam(required = true, value = "file") MultipartFile file){
+        DeferredResult<String> resultado = new DeferredResult<>();//instancia a resposta assíncrona
+
+        Thread thread = new Thread(new FotoStorageRunnable(file,resultado)); //define uma nova thread
+        thread.start();
+
+        return resultado;
     }
 }

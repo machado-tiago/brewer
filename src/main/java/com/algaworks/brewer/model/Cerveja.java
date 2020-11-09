@@ -36,6 +36,7 @@ public class Cerveja {
     @NotBlank(message = "SKU é obrigatório.")
     private String sku;
 
+
     @NotBlank(message = "Nome é obrigatório.")
     private String nome;
 
