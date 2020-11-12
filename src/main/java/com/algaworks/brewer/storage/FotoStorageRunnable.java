@@ -1,21 +1,31 @@
 package com.algaworks.brewer.storage;
 
+import java.io.IOException;
+
+import com.algaworks.brewer.dto.FotoDto;
+
 import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.multipart.MultipartFile;
 
 public class FotoStorageRunnable implements Runnable {
 
     private MultipartFile file;
-    private DeferredResult<String> resultado;
+    private DeferredResult<FotoDto> resultado;
+    private FotoStorage fotoStorage;
 
-    public FotoStorageRunnable(MultipartFile file, DeferredResult<String> resultado) {
+    public FotoStorageRunnable(MultipartFile file, DeferredResult<FotoDto> resultado, FotoStorage fotoStorage) {
         this.file = file;
         this.resultado = resultado;
+        this.fotoStorage = fotoStorage;
     }
-    
+
     @Override
     public void run() {
-        System.out.println(file.getOriginalFilename());
-        resultado.setResult("Foto recebida!");
+        try {
+            this.fotoStorage.salvarTemporariamente(file);
+            resultado.setResult(new FotoDto(file.getOriginalFilename(), file.getBytes(), file.getContentType()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

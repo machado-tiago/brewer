@@ -2,11 +2,13 @@ package com.algaworks.brewer.controller;
 
 import javax.validation.Valid;
 
+import com.algaworks.brewer.dto.FotoDto;
 import com.algaworks.brewer.model.Cerveja;
 import com.algaworks.brewer.model.Origem;
 import com.algaworks.brewer.model.Sabor;
 import com.algaworks.brewer.service.CervejaService;
 import com.algaworks.brewer.service.EstiloService;
+import com.algaworks.brewer.storage.FotoStorage;
 import com.algaworks.brewer.storage.FotoStorageRunnable;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,9 @@ public class CervejasController {
     @Autowired
     private CervejaService cervejaService;
 
+    @Autowired
+    private FotoStorage fotoStorage;
+
 
     @GetMapping(value = "/novo")
     public ModelAndView novo(Cerveja cerveja) {
@@ -60,10 +65,10 @@ public class CervejasController {
 
     
     @RequestMapping(value = "/fileupload", method = RequestMethod.POST, consumes =MediaType.MULTIPART_FORM_DATA_VALUE)
-    public @ResponseBody DeferredResult<String> fileupload(@RequestBody @RequestParam(required = true, value = "file") MultipartFile file){
-        DeferredResult<String> resultado = new DeferredResult<>();//instancia a resposta assíncrona
+    public @ResponseBody DeferredResult<FotoDto> fileupload(@RequestBody @RequestParam(required = true, value = "file") MultipartFile file){
+        DeferredResult<FotoDto> resultado = new DeferredResult<>();//instancia a resposta assíncrona
 
-        Thread thread = new Thread(new FotoStorageRunnable(file,resultado)); //define uma nova thread
+        Thread thread = new Thread(new FotoStorageRunnable(file,resultado, fotoStorage)); //define uma nova thread
         thread.start();
 
         return resultado;

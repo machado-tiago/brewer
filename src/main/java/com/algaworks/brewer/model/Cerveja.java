@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -36,6 +37,9 @@ public class Cerveja {
     @NotBlank(message = "SKU é obrigatório.")
     private String sku;
 
+    @Lob
+    private byte[] foto;
+    private String nomeFoto;
 
     @NotBlank(message = "Nome é obrigatório.")
     private String nome;
@@ -194,6 +198,22 @@ public class Cerveja {
         } else if (!codigo.equals(other.codigo))
             return false;
         return true;
+    }
+
+    public String getNomeFoto() {
+        return nomeFoto;
+    }
+
+    public void setNomeFoto(String nomeFoto) {
+        this.nomeFoto = nomeFoto;
+    }
+
+    public byte[] getFoto() {
+        return foto;
+    }
+
+    public void setFoto(byte[] foto) {
+        this.foto = foto;
     }
     
     

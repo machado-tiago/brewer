@@ -1,5 +1,7 @@
 package com.algaworks.brewer;
 
+import com.algaworks.brewer.storage.FotoLocalStorage;
+import com.algaworks.brewer.storage.FotoStorage;
 import com.algaworks.brewer.thymeleaf.dialect.BrewerDialect;
 
 import org.springframework.boot.SpringApplication;
@@ -18,5 +20,10 @@ public class BrewerApplication {
 	@Bean
 	public BrewerDialect brewerDialect(){
 		return new BrewerDialect();
+	}
+
+	@Bean
+	public FotoStorage fotoStorage(){
+		return new FotoLocalStorage();
 	}
 }
