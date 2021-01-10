@@ -119,7 +119,7 @@
                                 <div class="form-group input-group-btn"> 
                                     <input class="form-control" id=upload-select type="file" accept=".jpg,.jpeg,.png" />
                                     <button id="uploadfile" class="form-control btn btn-primary" onclick="uploadFile();" type="button"><i class="glyphicon glyphicon-cloud-upload"></i> Upload</button>
-                                    <img class="form-control" alt="Imagem" src="" id="target" width="200" height="200">
+                                    <img class="form-control" alt="Imagem" src="" id="target">
                                 </div>
                             </div>
                     </div>
@@ -146,36 +146,41 @@
 
 <th:block layout:fragment="javascript-extra2">
     <script type="text/javascript">
-    function uploadFile(){
-        var target = $('#target');
-        var file = $('#upload-select')[0].files[0];
-        var form = new FormData();
-        
-        var fileReader = new FileReader();
-        fileReader.onloadend = function (){
-            target.src =fileReader.result;//define o atributo src do elemento #target quando o arquivo for carregado
-        }
-        
-        var settings ={
-            url:'/brewer/cervejas/fileupload',
-            cache: false,
-            contentType: false,
-            type: 'POST',
-            enctype: 'multipart/form-data',
-            data: form,//quando é do tipo form-data é necessário esse atributo, não sendo um json
-            processData: false,
-            success: function(objeto) {
-                $('input[name=nomeFoto]').val(objeto.nome);
-                $('input[name=foto]').val(objeto.foto);
+
+    $(function(){
+        $('#upload-select').change(function () {//função para exibir a imagem carregada
+            var file = $('#upload-select')[0].files[0]; //botão com os arquivos carregados            
+            var fileReader = new FileReader();
+            fileReader.onloadend = function (){
+                $('#target').attr('src', fileReader.result);//quando o arquivo for carregado, define o atributo src do elemento #target
             }
-        }
+            fileReader.readAsDataURL(file);//converte o binário para o navegador ler
+        });
+    })
+
+    function uploadFile(){//botão de upload
+        var file = $('#upload-select')[0].files[0]; //botão com os arquivos carregados
+        var form = new FormData();//conjunto de pares chave/valor
         
         if (file){
-            form.append("file", file,file.name);
-            fileReader.readAsDataURL(file);
+            form.append("file", file, file.name);
             $.ajax(settings).done(function(response){
                 console.log(response);
-            });   
+            });  
+
+            var settings ={
+                url:'/brewer/cervejas/fileupload',
+                cache: false,
+                contentType: false,
+                type: 'POST',
+                enctype: 'multipart/form-data',
+                data: form,//quando é do tipo form-data é necessário esse atributo, não sendo um json
+                processData: false,
+                success: function(objeto) {
+                    $('input[name=nomeFoto]').val(objeto.nome);
+                    $('input[name=foto]').val(objeto.foto);
+                }
+            }
         }
     }
     </script>
