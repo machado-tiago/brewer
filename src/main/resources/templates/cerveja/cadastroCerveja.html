@@ -164,23 +164,25 @@
         
         if (file){
             form.append("file", file, file.name);
-            $.ajax(settings).done(function(response){
-                console.log(response);
-            });  
-
             var settings ={
                 url:'/brewer/cervejas/fileupload',
-                cache: false,
-                contentType: false,
                 type: 'POST',
                 enctype: 'multipart/form-data',
-                data: form,//quando é do tipo form-data é necessário esse atributo, não sendo um json
+                allow:'*.(jpg|jpeg|png)',
+                cache: false,
+                contentType: false,
                 processData: false,
+                filelimit: 1,
+                data: form,//quando é do tipo form-data é necessário esse atributo, não sendo um json
                 success: function(objeto) {
                     $('input[name=nomeFoto]').val(objeto.nome);
                     $('input[name=foto]').val(objeto.foto);
                 }
             }
+            $.ajax(settings).done(function(response){
+                console.log(response);
+            });  
+
         }
     }
     </script>

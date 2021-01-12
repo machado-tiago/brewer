@@ -66,8 +66,8 @@ public class CervejasController {
     
     @RequestMapping(value = "/fileupload", method = RequestMethod.POST, consumes =MediaType.MULTIPART_FORM_DATA_VALUE)
     public @ResponseBody DeferredResult<FotoDto> fileupload(@RequestBody @RequestParam(required = true, value = "file") MultipartFile file){
+        
         DeferredResult<FotoDto> resultado = new DeferredResult<>();//instancia a resposta assíncrona
-
         Thread thread = new Thread(new FotoStorageRunnable(file,resultado, fotoStorage)); //define uma nova thread
         thread.start();
 
