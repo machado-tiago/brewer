@@ -23,7 +23,7 @@
         
         <div class="container-fluid">
 
-            <form class="form-vertical  js-form-loading" method="POST" action="" th:object="${cerveja}">
+            <form class="form-vertical  js-form-loading" method="POST" enctype="multipart/form-data" action="" th:object="${cerveja}">
                 <brewer:message/>
 
                 <div class="row">
@@ -118,7 +118,7 @@
                         <label class="control-label">Foto</label>
                         <div id="upload-form" class="form-inline">
                             <div class="form-group input-group-btn"> 
-                                <input class="form-control" id=upload-select type="file" accept=".jpg,.jpeg,.png" />
+                                <input class="form-control" id=upload-select name=upload-select type="file" accept=".jpg,.jpeg,.png" />
                                 <button id="uploadfile" class="form-control btn btn-primary" onclick="uploadFile();" type="button"><i class="glyphicon glyphicon-cloud-upload"></i> Upload</button>
                             </div>
                         </div>

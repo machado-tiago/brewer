@@ -58,11 +58,11 @@ public class CervejasController {
     }
 
     @PostMapping(value = "/novo")
-    public ModelAndView cadastrar(@Valid Cerveja cerveja, BindingResult result, Model model, RedirectAttributes attributes){
+    public ModelAndView cadastrar(@Valid Cerveja cerveja, @RequestParam("upload-select") MultipartFile file,BindingResult result, Model model, RedirectAttributes attributes){
         if (result.hasErrors()) {
             return novo(cerveja);//PARA NÃO TER QUE PASSAR UM MODEL COMO PARÂMETRO, UTILIZAMOS O MODELANDVIEW.
         }
-        cervejaService.salvar(cerveja);
+        cervejaService.salvar(cerveja, file);
         attributes.addFlashAttribute("mensagem", "Cerveja salva com sucesso!");
         return new ModelAndView("redirect:/cervejas/novo");
     }

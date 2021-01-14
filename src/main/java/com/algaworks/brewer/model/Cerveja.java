@@ -59,12 +59,14 @@ public class Cerveja {
     private BigDecimal valor;
 
     @NotNull(message = "O teor alcoólico é obrigatório")
-    @DecimalMax(value = "100.0", message = "O valor do teor alcoólico deve ser menor que 100.")
+    @NumberFormat(pattern = "#,##0.00")
+    @DecimalMax(value = "100.00", message = "O valor do teor alcoólico deve ser menor que 100.")
     @Column(name = "teor_alcoolico")
     private BigDecimal teorAlcoolico;
 
     @NotNull(message = "A comissão  é obrigatória.")
-    @DecimalMax(value = "100.0", message = "A comissão deve ser igual ou menor que 100.")
+    @NumberFormat(pattern = "#,##0.00")
+    @DecimalMax(value = "100.00", message = "A comissão deve ser igual ou menor que 100.")
     private BigDecimal comissao;
 
     @NotNull(message = "A quantidade em estoque é obrigatória.")

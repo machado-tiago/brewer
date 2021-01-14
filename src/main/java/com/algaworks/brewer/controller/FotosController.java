@@ -31,9 +31,4 @@ public class FotosController {
         return resultado;
     }
     
-    @GetMapping("/temp/{nome:.*}")//colocada expressão regular para que leia o arquivo com a extensão, se não ele não considera o ponto como parte do nome
-    public byte[] recuperarFotoTemporaria(@PathVariable String nome){
-        return fotoStorage.recuperarFotoTemporaria(nome);
-    }
-    
 }
