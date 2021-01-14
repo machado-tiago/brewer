@@ -23,9 +23,7 @@ public class FotoLocalStorage implements FotoStorage {
     }
     
     public FotoLocalStorage() {
-        this(FileSystems.getDefault().getPath(System.getenv("HOME"), ".brewerfotos"));//local da pasta quando não é passado
-        this.criarPastas();
-        
+        this(FileSystems.getDefault().getPath(System.getProperty("user.dir"), "fotos"));//local do projeto atual
     }
     
     private void criarPastas() {
@@ -55,6 +53,14 @@ public class FotoLocalStorage implements FotoStorage {
         return UUID.randomUUID().toString() + "_"+ nomeOriginal;
     }
 
+    @Override
+    public byte[] recuperarFotoTemporaria(String nome) {
+        try {
+            return Files.readAllBytes(this.getTemp().resolve(nome));
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao recuperar foto temporária", e);
+        }
+    }
     public Path getLocal() {
         return local;
     }
@@ -70,6 +76,7 @@ public class FotoLocalStorage implements FotoStorage {
     public void setTemp(Path temp) {
         this.temp = temp;
     }
+
 
 
 

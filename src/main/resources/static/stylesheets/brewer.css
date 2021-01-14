@@ -56,6 +56,9 @@
 	margin: 6px 0 0 5px;
 }
 
+#divfoto{
+    display: none;
+}
 /* #upload-select{
     display: none;
 } */

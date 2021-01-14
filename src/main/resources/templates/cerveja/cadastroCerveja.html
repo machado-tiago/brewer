@@ -6,6 +6,7 @@
     xmlns:brewer="http://www.brewer.com" >
 
 <head>
+    <title>Cadastro de cerveja</title>
     <!-- UIkit CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.5.9/dist/css/uikit.min.css" />
 </head>
@@ -112,16 +113,25 @@
                 <div class="row">
                     <div class="form-group col-sm-12">
 
-                        <input type="hidden" th:field="*{foto}"/>
+                        <input type="hidden" th:field="*{fileType}"/>
                         <input type="hidden" th:field="*{nomeFoto}"/>
                         <label class="control-label">Foto</label>
-                            <div class="form-inline">
-                                <div class="form-group input-group-btn"> 
-                                    <input class="form-control" id=upload-select type="file" accept=".jpg,.jpeg,.png" />
-                                    <button id="uploadfile" class="form-control btn btn-primary" onclick="uploadFile();" type="button"><i class="glyphicon glyphicon-cloud-upload"></i> Upload</button>
-                                    <img class="form-control" alt="Imagem" src="" id="target">
-                                </div>
+                        <div id="upload-form" class="form-inline">
+                            <div class="form-group input-group-btn"> 
+                                <input class="form-control" id=upload-select type="file" accept=".jpg,.jpeg,.png" />
+                                <button id="uploadfile" class="form-control btn btn-primary" onclick="uploadFile();" type="button"><i class="glyphicon glyphicon-cloud-upload"></i> Upload</button>
                             </div>
+                        </div>
+
+                        <div id="divfoto" class="row">
+                            <div class="col-md-4"></div> 
+                            <div class="col-md-4 text-center"> 
+                                <a href="#" class="thumbnail">
+                                    <img id="target" alt="Imagem" src="" height="700px" width="700">
+                                </a>
+                                <button id="remove" onclick="removeFile();" class="btn btn-link" type="button"><span class="glyphicon glyphicon-remove"></span></button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -135,7 +145,7 @@
         
             </form>
         </div>
-        <div th:replace="estilo/CadastroRapidoEstilo :: modal"></div>
+        <div th:replace="estilo/cadastroRapidoEstilo :: modal"></div>
     </section>
 <th:block layout:fragment="javascript-extra">
     <script th:src="@{/javascripts/estilo.cadastro-rapido.js}"></script>
@@ -148,6 +158,7 @@
     <script type="text/javascript">
 
     $(function(){
+
         $('#upload-select').change(function () {//função para exibir a imagem carregada
             var file = $('#upload-select')[0].files[0]; //botão com os arquivos carregados            
             var fileReader = new FileReader();
@@ -155,6 +166,7 @@
                 $('#target').attr('src', fileReader.result);//quando o arquivo for carregado, define o atributo src do elemento #target
             }
             fileReader.readAsDataURL(file);//converte o binário para o navegador ler
+            $('#divfoto').css('display','block');
         });
     })
 
@@ -165,7 +177,7 @@
         if (file){
             form.append("file", file, file.name);
             var settings ={
-                url:'/brewer/cervejas/fileupload',
+                url:'/brewer/fotos/fileupload',
                 type: 'POST',
                 enctype: 'multipart/form-data',
                 allow:'*.(jpg|jpeg|png)',
@@ -176,7 +188,10 @@
                 data: form,//quando é do tipo form-data é necessário esse atributo, não sendo um json
                 success: function(objeto) {
                     $('input[name=nomeFoto]').val(objeto.nome);
-                    $('input[name=foto]').val(objeto.foto);
+                    $('input[name=fileType]').val(objeto.contentType);
+                    $('#upload-form').hide();
+                    //$('input[name=foto]').val(objeto.foto);//passa os bytes do arquivo
+                    alert('Upload realizado com sucesso!');
                 }
             }
             $.ajax(settings).done(function(response){
@@ -185,6 +200,17 @@
 
         }
     }
+
+    function removeFile() {
+        $('#nomeFoto').val('');
+        $('#fileType').val('');
+        $('#upload-select').val('');
+        $('#divfoto').css('display','none');
+        $('#target').attr('src', '');
+        $('#upload-form').show();
+        
+    }
+
     </script>
 </th:block>
 

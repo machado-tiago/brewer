@@ -1,6 +1,8 @@
 package com.algaworks.brewer.model;
 
+import java.io.File;
 import java.math.BigDecimal;
+import java.nio.file.Files;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,12 +35,14 @@ public class Cerveja {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long codigo;
 
-    @SKU
     @NotBlank(message = "SKU é obrigatório.")
+    @SKU
     private String sku;
 
+    
     @Lob
     private byte[] foto;
+    private String fileType;
     private String nomeFoto;
 
     @NotBlank(message = "Nome é obrigatório.")
@@ -214,6 +218,14 @@ public class Cerveja {
 
     public void setFoto(byte[] foto) {
         this.foto = foto;
+    }
+
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
     }
     
     
