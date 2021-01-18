@@ -39,10 +39,8 @@ public class Cerveja {
     @SKU
     private String sku;
 
-    
-    @Lob
-    private byte[] foto;
     private String fileType;
+    @NotBlank(message = "Upload da foto é obrigatório.")
     private String nomeFoto;
 
     @NotBlank(message = "Nome é obrigatório.")

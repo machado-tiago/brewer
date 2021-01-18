@@ -31,12 +31,12 @@ public class FotoLocalStorage implements FotoStorage {
             Files.createDirectories(this.local);//cria o diretório
             this.setTemp(FileSystems.getDefault().getPath(this.getLocal().toString(), "temp"));//path da pasta dentro do diretório criado, chamada temp
             Files.createDirectories(this.getTemp());//criação da temp
-
+            
         } catch (IOException e) {
             throw new RuntimeException("Erro ao criar pasta para salvar foto", e);
         }
     }
-
+    
     @Override
     public String salvarTemporariamente(@NotNull MultipartFile file) {
         String novonome = renomearArquivo(file.getOriginalFilename());
@@ -48,19 +48,20 @@ public class FotoLocalStorage implements FotoStorage {
 		}
         return novonome;
     }
+    
+    @Override
+    public byte[] recuperarFotoTemporaria(String nome) {
+        try {
+			return Files.readAllBytes(this.temp.resolve(nome));
+		} catch (IOException e) {
+			throw new RuntimeException("Erro lendo a foto temporária", e);
+		}
+    }
 
     public String renomearArquivo(String nomeOriginal){
         return UUID.randomUUID().toString() + "_"+ nomeOriginal;
     }
 
-    @Override
-    public byte[] recuperarFotoTemporaria(String nome) {
-        try {
-            return Files.readAllBytes(this.getTemp().resolve(nome));
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao recuperar foto temporária", e);
-        }
-    }
     public Path getLocal() {
         return local;
     }
@@ -76,6 +77,7 @@ public class FotoLocalStorage implements FotoStorage {
     public void setTemp(Path temp) {
         this.temp = temp;
     }
+
 
 
 
