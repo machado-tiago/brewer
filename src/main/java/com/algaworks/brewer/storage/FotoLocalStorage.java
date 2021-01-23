@@ -11,6 +11,9 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.name.Rename;
+
 public class FotoLocalStorage implements FotoStorage {
     //dois locais
     private Path local;
@@ -66,9 +69,26 @@ public class FotoLocalStorage implements FotoStorage {
             throw new RuntimeException("Erro lendo a foto salva", e);
 		}
     }
-
+    
     public String renomearArquivo(String nomeOriginal){
         return UUID.randomUUID().toString() + "_"+ nomeOriginal;
+    }
+    
+    @Override
+    public void salvar(String nomeFoto) {
+        try {
+            Files.move(this.getTemp().resolve(nomeFoto), this.getLocal().resolve(nomeFoto));
+        } catch (IOException e) {
+            throw new RuntimeException("Erro ao mover a foto para o destino final", e);
+        }
+
+        //utilização de lib de criação de thumbnail
+        try {
+            Thumbnails.of(this.getLocal().resolve(nomeFoto).toString()).size(40, 68)
+                    .toFiles(Rename.PREFIX_DOT_THUMBNAIL);
+        } catch (IOException e) {
+            throw new RuntimeException("Erro ao gerar thumbnail",e);
+        }
     }
 
     public Path getLocal() {
@@ -86,6 +106,7 @@ public class FotoLocalStorage implements FotoStorage {
     public void setTemp(Path temp) {
         this.temp = temp;
     }
+
 
 
 

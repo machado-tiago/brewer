@@ -27,6 +27,7 @@ import javax.validation.constraints.Size;
 import com.algaworks.brewer.validation.SKU;
 
 import org.springframework.format.annotation.NumberFormat;
+import org.springframework.util.StringUtils;
 
 @Entity
 @Table(name = "cerveja")
@@ -219,5 +220,8 @@ public class Cerveja {
         this.fileType = fileType;
     }
     
+    public String getFotoOuMock(){
+        return StringUtils.isEmpty(this.nomeFoto)? "cerveja-mock.png":nomeFoto;
+    }
     
 }

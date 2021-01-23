@@ -10,9 +10,11 @@ import javax.transaction.Transactional;
 
 import com.algaworks.brewer.model.Cerveja;
 import com.algaworks.brewer.repository.CervejaRepository;
+import com.algaworks.brewer.service.event.cerveja.CervejaSalvaEvent;
 import com.algaworks.brewer.storage.FotoStorage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,19 +23,15 @@ public class CervejaService {
     CervejaRepository cervejaRepository;
 
     @Autowired
+    private ApplicationEventPublisher publisher;
+
+    @Autowired
     FotoStorage fotoStorage;
 
     @Transactional
     public void salvar(Cerveja cerveja) {
-        try {
-            cervejaRepository.save(cerveja);
-            if (cerveja.getNomeFoto().equals(null)) {
-                Path atualPath = Paths.get(fotoStorage.getTemp().toAbsolutePath().toString(), cerveja.getNomeFoto());
-                Files.move(atualPath, Paths.get(fotoStorage.getLocal().toAbsolutePath().toString(), cerveja.getNomeFoto()));
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("Erro ao salvar", e);
-        }
+        cervejaRepository.save(cerveja);
+        publisher.publishEvent(new CervejaSalvaEvent(cerveja));
     }
 
 	public List<Cerveja> findAll() {
