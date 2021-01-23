@@ -1,10 +1,10 @@
 package com.algaworks.brewer.service;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -27,10 +27,16 @@ public class CervejaService {
     public void salvar(Cerveja cerveja) {
         try {
             cervejaRepository.save(cerveja);
-            Path atualPath = Paths.get(fotoStorage.getTemp().toAbsolutePath().toString(), cerveja.getNomeFoto());
-            Files.move(atualPath, Paths.get(fotoStorage.getLocal().toAbsolutePath().toString(), cerveja.getNomeFoto()));
+            if (cerveja.getNomeFoto().equals(null)) {
+                Path atualPath = Paths.get(fotoStorage.getTemp().toAbsolutePath().toString(), cerveja.getNomeFoto());
+                Files.move(atualPath, Paths.get(fotoStorage.getLocal().toAbsolutePath().toString(), cerveja.getNomeFoto()));
+            }
         } catch (IOException e) {
-            throw new RuntimeException("Erro ao ler foto", e);
+            throw new RuntimeException("Erro ao salvar", e);
         }
     }
+
+	public List<Cerveja> findAll() {
+		return cervejaRepository.findAll();
+	}
 }

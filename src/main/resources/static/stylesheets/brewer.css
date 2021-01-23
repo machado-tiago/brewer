@@ -41,7 +41,9 @@
     margin-bottom: 1px;
 }
 
-
+.bw-tabela-simples{
+    margin-top: 20px;
+}
 
 /*# COMPONENTES
 ######################
@@ -59,6 +61,39 @@
 #divfoto{
     display: none;
 }
-/* #upload-select{
-    display: none;
-} */
+
+.bw-required > .control-label:after{
+    content: "*";
+}
+
+/* Colunas - Pesquisa de Cervejas */
+.table-cervejas-col-foto {
+	min-width: 50px;
+	width: 50px
+}
+
+.table-cervejas-col-sku {
+	width: 90px;
+	text-align: center;
+}
+
+.table-cervejas-col-nome {
+	
+}
+
+.table-cervejas-col-estilo {
+	width: 120px;
+}
+
+.table-cervejas-col-origem {
+	width: 100px;
+}
+
+.table-cervejas-col-valor {
+	width: 100px;
+	text-align: right;
+}
+
+.table-cervejas-col-acoes {
+	width: 80px;
+}

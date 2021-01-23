@@ -40,7 +40,6 @@ public class Cerveja {
     private String sku;
 
     private String fileType;
-    @NotBlank(message = "Upload da foto é obrigatório.")
     private String nomeFoto;
 
     @NotBlank(message = "Nome é obrigatório.")
@@ -210,14 +209,6 @@ public class Cerveja {
 
     public void setNomeFoto(String nomeFoto) {
         this.nomeFoto = nomeFoto;
-    }
-
-    public byte[] getFoto() {
-        return foto;
-    }
-
-    public void setFoto(byte[] foto) {
-        this.foto = foto;
     }
 
     public String getFileType() {

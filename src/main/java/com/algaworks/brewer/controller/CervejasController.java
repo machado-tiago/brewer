@@ -2,34 +2,21 @@ package com.algaworks.brewer.controller;
 
 import javax.validation.Valid;
 
-import com.algaworks.brewer.dto.FotoDto;
 import com.algaworks.brewer.model.Cerveja;
 import com.algaworks.brewer.model.Origem;
 import com.algaworks.brewer.model.Sabor;
 import com.algaworks.brewer.service.CervejaService;
 import com.algaworks.brewer.service.EstiloService;
 import com.algaworks.brewer.storage.FotoStorage;
-import com.algaworks.brewer.storage.FotoStorageRunnable;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.async.DeferredResult;
-import org.springframework.web.multipart.MultipartFile;
+
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -44,10 +31,6 @@ public class CervejasController {
     @Autowired
     private CervejaService cervejaService;
 
-    @Autowired
-    private FotoStorage fotoStorage;
-
-
     @GetMapping(value = "/novo")
     public ModelAndView novo(Cerveja cerveja) {
         ModelAndView mv = new ModelAndView("/cerveja/cadastroCerveja");
@@ -58,7 +41,7 @@ public class CervejasController {
     }
 
     @PostMapping(value = "/novo")
-    public ModelAndView cadastrar(@Valid Cerveja cerveja, BindingResult result, Model model, RedirectAttributes attributes){
+    public ModelAndView cadastrar(@Valid Cerveja cerveja, BindingResult result, RedirectAttributes attributes){
         if (result.hasErrors()) {
             return novo(cerveja);//PARA NÃO TER QUE PASSAR UM MODEL COMO PARÂMETRO, UTILIZAMOS O MODELANDVIEW.
         }
@@ -67,5 +50,13 @@ public class CervejasController {
         return new ModelAndView("redirect:/cervejas/novo");
     }
 
-
+    @GetMapping
+    public ModelAndView pesquisar(){
+        ModelAndView mv = new ModelAndView("cerveja/pesquisaCervejas");
+        mv.addObject("sabores", Sabor.values());
+        mv.addObject("estilos", estiloService.findAll());
+        mv.addObject("origens", Origem.values());
+        mv.addObject("cervejas", cervejaService.findAll());
+        return mv;
+    }
 }

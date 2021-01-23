@@ -52,9 +52,18 @@ public class FotoLocalStorage implements FotoStorage {
     @Override
     public byte[] recuperarFotoTemporaria(String nome) {
         try {
-			return Files.readAllBytes(this.temp.resolve(nome));
+            return Files.readAllBytes(this.temp.resolve(nome));
 		} catch (IOException e) {
-			throw new RuntimeException("Erro lendo a foto temporária", e);
+            throw new RuntimeException("Erro lendo a foto temporária", e);
+		}
+    }
+    
+    @Override
+    public byte[] recuperarFotoSalva(String nome) {
+        try {
+            return Files.readAllBytes(this.local.resolve(nome));
+		} catch (IOException e) {
+            throw new RuntimeException("Erro lendo a foto salva", e);
 		}
     }
 
@@ -77,6 +86,7 @@ public class FotoLocalStorage implements FotoStorage {
     public void setTemp(Path temp) {
         this.temp = temp;
     }
+
 
 
 
