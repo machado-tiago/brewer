@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.algaworks.brewer.dto.CervejaFilterDto;
 import com.algaworks.brewer.model.Cerveja;
 import com.algaworks.brewer.repository.CervejaRepository;
 import com.algaworks.brewer.service.event.cerveja.CervejaSalvaEvent;
@@ -36,5 +37,9 @@ public class CervejaService {
 
 	public List<Cerveja> findAll() {
 		return cervejaRepository.findAll();
+	}
+
+	public Object filtrar(CervejaFilterDto cervejaFilterDto) {
+		return cervejaRepository.filtrar(cervejaFilterDto);
 	}
 }

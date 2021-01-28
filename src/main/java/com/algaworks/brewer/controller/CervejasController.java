@@ -2,6 +2,7 @@ package com.algaworks.brewer.controller;
 
 import javax.validation.Valid;
 
+import com.algaworks.brewer.dto.CervejaFilterDto;
 import com.algaworks.brewer.model.Cerveja;
 import com.algaworks.brewer.model.Origem;
 import com.algaworks.brewer.model.Sabor;
@@ -51,12 +52,12 @@ public class CervejasController {
     }
 
     @GetMapping
-    public ModelAndView pesquisar(){
+    public ModelAndView pesquisar(CervejaFilterDto cervejaFilterDto, BindingResult result){
         ModelAndView mv = new ModelAndView("cerveja/pesquisaCervejas");
         mv.addObject("sabores", Sabor.values());
         mv.addObject("estilos", estiloService.findAll());
         mv.addObject("origens", Origem.values());
-        mv.addObject("cervejas", cervejaService.findAll());
+        mv.addObject("cervejas", cervejaService.filtrar(cervejaFilterDto));
         return mv;
     }
 }
