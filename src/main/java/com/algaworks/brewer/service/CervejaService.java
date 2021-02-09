@@ -1,11 +1,5 @@
 package com.algaworks.brewer.service;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
-
 import javax.transaction.Transactional;
 
 import com.algaworks.brewer.dto.CervejaFilterDto;
@@ -16,6 +10,7 @@ import com.algaworks.brewer.storage.FotoStorage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -39,7 +34,7 @@ public class CervejaService {
 		return cervejaRepository.findAll();
 	}
 
-	public Object filtrar(CervejaFilterDto cervejaFilterDto) {
-		return cervejaRepository.filtrar(cervejaFilterDto);
+	public Object filtrar(CervejaFilterDto cervejaFilterDto, Pageable pageable) {
+		return cervejaRepository.filtrar(cervejaFilterDto, pageable);
 	}
 }

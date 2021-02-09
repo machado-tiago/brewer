@@ -14,6 +14,7 @@ import javax.persistence.criteria.Root;
 import com.algaworks.brewer.dto.CervejaFilterDto;
 import com.algaworks.brewer.model.Cerveja;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -26,11 +27,12 @@ public class CervejaRepositoryImpl implements CervejaRepositoryQueries {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Cerveja> filtrar(CervejaFilterDto cervejaFilterDto) {
+    public List<Cerveja> filtrar(CervejaFilterDto cervejaFilterDto, Pageable pageable) {
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<Cerveja> query = builder.createQuery(Cerveja.class);
 		Root<Cerveja> cervejaEntity = query.from(Cerveja.class);
         List<Predicate> predicateList = new ArrayList<>();
+		
         
         if (cervejaFilterDto != null) {
 			if (!StringUtils.isEmpty(cervejaFilterDto.getSku())) {
@@ -65,12 +67,9 @@ public class CervejaRepositoryImpl implements CervejaRepositoryQueries {
 		query.where(predicateList.toArray(new Predicate[0]));
 		TypedQuery<Cerveja> typedQuery = em.createQuery(query);
 
-		/*
-		TypedQuery<Cerveja> typedQuery =  (TypedQuery<Cerveja>) paginacaoUtil.prepararOrdem(query, cervejaEntity, pageable);
-		typedQuery = (TypedQuery<Cerveja>) paginacaoUtil.prepararIntervalo(typedQuery, pageable);
-		
-        return new PageImpl<>(typedQuery.getResultList(), pageable, total(filtro));
-		*/
+		int totalRegistrosPorPagina = pageable.getPageSize();
+		typedQuery.setMaxResults(totalRegistrosPorPagina);
+		typedQuery.setFirstResult(pageable.getPageNumber()*totalRegistrosPorPagina);
 
 		return typedQuery.getResultList();
     }
