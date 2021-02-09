@@ -10,6 +10,7 @@ import com.algaworks.brewer.storage.FotoStorage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +35,7 @@ public class CervejaService {
 		return cervejaRepository.findAll();
 	}
 
-	public Object filtrar(CervejaFilterDto cervejaFilterDto, Pageable pageable) {
+	public Page<Cerveja> filtrar(CervejaFilterDto cervejaFilterDto, Pageable pageable) {
 		return cervejaRepository.filtrar(cervejaFilterDto, pageable);
 	}
 }

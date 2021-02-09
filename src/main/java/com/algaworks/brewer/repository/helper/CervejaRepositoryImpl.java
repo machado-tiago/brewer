@@ -14,6 +14,8 @@ import javax.persistence.criteria.Root;
 import com.algaworks.brewer.dto.CervejaFilterDto;
 import com.algaworks.brewer.model.Cerveja;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,14 +29,26 @@ public class CervejaRepositoryImpl implements CervejaRepositoryQueries {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Cerveja> filtrar(CervejaFilterDto cervejaFilterDto, Pageable pageable) {
+    public Page<Cerveja> filtrar(CervejaFilterDto cervejaFilterDto, Pageable pageable) {
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<Cerveja> query = builder.createQuery(Cerveja.class);
 		Root<Cerveja> cervejaEntity = query.from(Cerveja.class);
-        List<Predicate> predicateList = new ArrayList<>();
 		
-        
-        if (cervejaFilterDto != null) {
+		query.where(adicionarFiltro(cervejaFilterDto, cervejaEntity));
+		TypedQuery<Cerveja> typedQuery = em.createQuery(query);
+		
+		int totalRegistrosPorPagina = pageable.getPageSize();
+		typedQuery.setMaxResults(totalRegistrosPorPagina);
+		typedQuery.setFirstResult(pageable.getPageNumber()*totalRegistrosPorPagina);
+		
+		return new PageImpl<>(typedQuery.getResultList(), pageable, total(cervejaFilterDto));
+    }
+	
+	private Predicate[] adicionarFiltro(CervejaFilterDto cervejaFilterDto, Root<Cerveja> cervejaEntity) {
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		List<Predicate> predicateList = new ArrayList<>();
+
+		if (cervejaFilterDto != null) {
 			if (!StringUtils.isEmpty(cervejaFilterDto.getSku())) {
 				predicateList.add(builder.equal(cervejaEntity.get("sku"), cervejaFilterDto.getSku()));
 			}
@@ -63,18 +77,21 @@ public class CervejaRepositoryImpl implements CervejaRepositoryQueries {
 				predicateList.add(builder.equal(cervejaEntity.get("valor"), cervejaFilterDto.getValorAte()));
 			}
         }
-        
-		query.where(predicateList.toArray(new Predicate[0]));
-		TypedQuery<Cerveja> typedQuery = em.createQuery(query);
 
-		int totalRegistrosPorPagina = pageable.getPageSize();
-		typedQuery.setMaxResults(totalRegistrosPorPagina);
-		typedQuery.setFirstResult(pageable.getPageNumber()*totalRegistrosPorPagina);
-
-		return typedQuery.getResultList();
-    }
+		return predicateList.toArray(new Predicate[0]);
+	}
 
 	private boolean isEstiloPresente(CervejaFilterDto cervejaFilterDto) {
 		return cervejaFilterDto.getEstilo() != null && cervejaFilterDto.getEstilo().getCodigo() != null;
+	}
+
+	private Long total(CervejaFilterDto cervejaFilterDto){
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+        CriteriaQuery<Long> query = builder.createQuery(Long.class);
+		Root<Cerveja> cervejaEntity = query.from(Cerveja.class);
+		query.select(builder.count(cervejaEntity));
+		query.where(adicionarFiltro(cervejaFilterDto, cervejaEntity));
+		
+		return em.createQuery(query).getSingleResult();
 	}
 }
