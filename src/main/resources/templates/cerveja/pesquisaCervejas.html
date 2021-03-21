@@ -106,7 +106,7 @@
                     </thead>
                     
                     <tbody>
-                        <tr th:each="cerveja : ${pagina.content}">
+                        <tr th:each="cerveja : ${pageWrapper.page.content}">
                             <td class="text-center">
                                 <img th:src="@{/fotos/thumbnail.{foto}(foto=${cerveja.fotoOuMock})}" class="img-responsive"/>
                             </td>
@@ -124,24 +124,24 @@
                                 </a>
                             </td>
                         </tr>
-                        <tr th:if="${#lists.isEmpty(pagina.content)}">
+                        <tr th:if="${#lists.isEmpty(pageWrapper.page.content)}">
                             <td colspan="7">Nenhuma cerveja encontrada</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <div class="col-sm-12 text-center" th:if="${not #lists.isEmpty(pagina.content)}">
+            <div class="col-sm-12 text-center" th:if="${not #lists.isEmpty(pageWrapper.page.content)}">
                 <nav>
-                    <ul class="pagination pagination-sm">
-                        <li th:class="${pagina.first}?disabled">
-                            <a th:remove="${pagina.first} ? tag" th:href="|?page=${pagina.number -1}|"><span>&laquo;</span></a>
+                    <ul class="pagination pagination-sm" th:with="paginaAtual=${pageWrapper.page.number}">
+                        <li th:class="${pageWrapper.page.first}?disabled">
+                            <a th:remove="${pageWrapper.page.first} ? tag" th:href="${pageWrapper.urlParaPagina(paginaAtual-1)}"><span>&laquo;</span></a>
                         </li>
-                        <th:block th:each="p : ${#numbers.sequence(1, pagina.totalPages)}" th:with="numeroPagina=${p-1}">
-                            <li th:class="${pagina.number == numeroPagina} ? active"><a th:href="|?page=${numeroPagina}|">[[${p}]]</a></li>
+                        <th:block th:each="p : ${#numbers.sequence(1, pageWrapper.page.totalPages)}" th:with="numeroPagina=${p-1}">
+                            <li th:class="${pageWrapper.page.number == numeroPagina} ? active"><a th:href="${pageWrapper.urlParaPagina(numeroPagina)}">[[${p}]]</a></li>
                         </th:block>
-                        <li th:class="${pagina.last}?disabled">
-                            <a th:remove="${pagina.last} ? tag" th:href="|?page=${pagina.number +1}|"><span>&raquo;</span> </a>
+                        <li th:class="${pageWrapper.page.last}?disabled">
+                            <a th:remove="${pageWrapper.page.last} ? tag" th:href="${pageWrapper.urlParaPagina(paginaAtual+1)}"><span>&raquo;</span> </a>
                         </li>
                     </ul>
                 </nav>
